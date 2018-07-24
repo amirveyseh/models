@@ -117,14 +117,19 @@ def create_reinforce_gen_train_op(hparams, learning_rate, final_gen_reward,
     gen_vars = [
         v for v in tf.trainable_variables() if v.op.name.startswith('gen')
     ]
-    print('\nOptimizing Generator vars:')
-    for v in gen_vars:
-      print(v)
+    # print('\nOptimizing Generator vars:')
+    # for v in gen_vars:
+    #   print(v)
 
     # Maximize reward.
     gen_grads = tf.gradients(-final_gen_reward, gen_vars)
     gen_grads_clipped, _ = tf.clip_by_global_norm(gen_grads,
                                                   FLAGS.grad_clipping)
+
+    print(gen_vars)
+    print(gen_grads)
+    print(final_gen_reward)
+
     maximize_op = gen_optimizer.apply_gradients(
         zip(gen_grads_clipped, gen_vars), global_step=global_step)
 

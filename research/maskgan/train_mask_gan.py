@@ -530,6 +530,7 @@ def train_model(hparams, data, log_dir, log, id_to_word, data_ngram_counts):
         print('\nTrainable Variables in Graph:')
         for v in tf.trainable_variables():
           print(v)
+        exit(1)
 
         ## Retrieve the initial savers.
         init_savers = model_utils.retrieve_init_savers(hparams)
@@ -1071,7 +1072,8 @@ def evaluate_model(hparams, data, train_dir, log, id_to_word,
 
 def main(_):
   hparams = create_hparams()
-  train_dir = FLAGS.base_directory + '/train'
+  cwd = os.getcwd()
+  train_dir = cwd+FLAGS.base_directory + '/train'
 
   # Load data set.
   if FLAGS.data_set == 'ptb':
@@ -1129,20 +1131,20 @@ def main(_):
   FLAGS.vocab_size = len(id_to_word)
   print('Vocab size: %d' % FLAGS.vocab_size)
 
-  tf.gfile.MakeDirs(FLAGS.base_directory)
+  tf.gfile.MakeDirs(cwd+FLAGS.base_directory)
 
   if FLAGS.mode == MODE_TRAIN:
     log = tf.gfile.GFile(
-        os.path.join(FLAGS.base_directory, 'train-log.txt'), mode='w')
+        os.path.join(cwd+FLAGS.base_directory, 'train-log.txt'), mode='w')
   elif FLAGS.mode == MODE_VALIDATION:
     log = tf.gfile.GFile(
-        os.path.join(FLAGS.base_directory, 'validation-log.txt'), mode='w')
+        os.path.join(cwd+FLAGS.base_directory, 'validation-log.txt'), mode='w')
   elif FLAGS.mode == MODE_TRAIN_EVAL:
     log = tf.gfile.GFile(
-        os.path.join(FLAGS.base_directory, 'train_eval-log.txt'), mode='w')
+        os.path.join(cwd+FLAGS.base_directory, 'train_eval-log.txt'), mode='w')
   else:
     log = tf.gfile.GFile(
-        os.path.join(FLAGS.base_directory, 'test-log.txt'), mode='w')
+        os.path.join(cwd+FLAGS.base_directory, 'test-log.txt'), mode='w')
 
   if FLAGS.mode == MODE_TRAIN:
     train_model(hparams, data_set, train_dir, log, id_to_word,

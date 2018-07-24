@@ -139,8 +139,9 @@ def create_generator(hparams,
          reuse=reuse)
   else:
     raise NotImplementedError
-  return (sequence, logits, log_probs, initial_state, final_state,
-          encoder_states)
+  # return (sequence, logits, log_probs, initial_state, final_state,
+  #         encoder_states)
+  return (sequence, logits, log_probs, initial_state, final_state, None)
 
 
 def create_discriminator(hparams,
